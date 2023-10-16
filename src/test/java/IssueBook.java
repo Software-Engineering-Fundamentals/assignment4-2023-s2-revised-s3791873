@@ -87,7 +87,7 @@ public class IssueBook {
     // IllegalBookIssueException
     @Test
     public void DuplicateIssue_ThrowsIllegalBookIssueException_IfSameBookTwice() throws IllegalBookIssueException {
-        Book testBook1 = new Book(1, "DuplicateIssue", 0);
+        Book testBook1 = new Book(1, "Duplicate Issue 1", 0);
         testLibraryCard.issueBook(testBook1); // we are issuing this book twice.
         assertThrows(IllegalBookIssueException.class, () -> {
             testLibraryCard.issueBook(testBook1);
@@ -109,7 +109,7 @@ public class IssueBook {
     @Test
     public void isCardValid_False_ifIssueExpiredCard() throws IllegalBookIssueException {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2022, 9, 5);
+        calendar.set(2022, 10, 17);
         Date end = calendar.getTime();
         testLibraryCard.setExpiryDate(end);
         boolean result = testLibraryCard.issueBook(testBook);
@@ -118,7 +118,7 @@ public class IssueBook {
 
     // testing attempting to issue an avaiable book, this should return true
     @Test
-    public void status_True_bookUnavailable() throws IllegalBookIssueException {
+    public void statusBook_True_bookUnavailable() throws IllegalBookIssueException {
         testBook.setStatus(true);
         boolean result = testLibraryCard.issueBook(testBook);
         assertTrue(result);
@@ -126,17 +126,20 @@ public class IssueBook {
 
     // testing attempting to issue an unavailable book, this should return false
     @Test
-    public void status_False_bookUnavailable() throws IllegalBookIssueException {
-        testBook.setStatus(false);
-        boolean result = testLibraryCard.issueBook(testBook);
+    public void statusBook_False_bookUnavailable() throws IllegalBookIssueException {
+        Book unavailBook = new Book(1, "The Unavailable Book", 0);
+        unavailBook.setStatus(false);
+        boolean result = testLibraryCard.issueBook(unavailBook);
         assertFalse(result);
     }
 
-    // testing attempting to issue a book while there is a fine on the card, this
-    // should return false
+    /*
+     * testing attempting to issue a book while there is a fine on the card, this
+     * student cannot borrowing a book, therefore turns false
+     */
     @Test
-    public void ReturnFalse_issueWithFine() throws IllegalBookIssueException {
-        double fine = 123.00;
+    public void noOutstandingFines_False_ifIssueWithFine() throws IllegalBookIssueException {
+        double fine = 69.10;
         testLibraryCard.setFine(fine);
         //
         boolean result = testLibraryCard.issueBook(testBook);
@@ -146,15 +149,16 @@ public class IssueBook {
     // testing the day count after issuing a book not in demand, should have the
     // value 15
     @Test
-    public void DaysEqual15_issueLowDemand() throws IllegalBookIssueException {
+    public void issueDays_DaysIs15_issueLowDemand() throws IllegalBookIssueException {
         testBook.setDemand(0);
         testLibraryCard.issueBook(testBook);
         //
         assertEquals(15, testBook.getDays());
     }
 
-    @Test // testing the day count after issuing a book in demand, should have the value 3
-    public void DaysEqual3_issuehighDemand() throws IllegalBookIssueException {
+    // testing the day count after issuing a book in demand, should have the value 3
+    @Test
+    public void issueDays_DaysIs3_issuehighDemand() throws IllegalBookIssueException {
         testBook.setDemand(1);
         testLibraryCard.issueBook(testBook);
         assertEquals(3, testBook.getDays());

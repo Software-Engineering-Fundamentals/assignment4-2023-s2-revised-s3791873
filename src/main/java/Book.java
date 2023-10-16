@@ -68,7 +68,8 @@ public class Book {
         return this.title;
     }
 
-    public int days() {
+    // Rename
+    public int getDays() {
         return days;
     }
 

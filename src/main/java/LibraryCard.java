@@ -112,11 +112,13 @@ public class LibraryCard {
 
         // Check that the book is available for borrowing
         if (!book.getStatus()) {
+            System.out.println("The book titled: " + book.getTitle() + " is currently unavailable for borrowing.");
             return false;
         }
         // The book should not be issued if there is pending fine associated with the
         // library card
         if (fine > 0.0) {
+            System.out.println("Cannot issue book. Student has outstanding fine of: $" + getFine());
             return false;
         }
         /*
@@ -131,8 +133,11 @@ public class LibraryCard {
          */
         if (book.getDemand() == 0) {
             book.setDays(15);
+            System.out.println("You will be able to borrow the book titled: " + book.getTitle() + " for 15 days");
         } else if (book.getDemand() == 1) {
             book.setDays(3);
+            System.out.println("You will be able to borrow the book titled: " + book.getTitle() + " for 3 days");
+
         }
 
         /*
