@@ -80,7 +80,7 @@ public class Book {
         return status;
     }
 
-    // Fix Typo.
+    // Fix error
     public void setStatus(boolean status) {
         this.status = status;
     }
