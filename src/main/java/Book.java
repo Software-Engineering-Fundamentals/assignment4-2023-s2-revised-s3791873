@@ -80,7 +80,8 @@ public class Book {
         return status;
     }
 
-    public void setDemand(boolean status) {
+    // Fix Typo.
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
