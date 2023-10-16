@@ -41,7 +41,10 @@ public class IssueBook {
 
     }
 
-    // Executes a fresh testing unit each time.
+    /*
+     * Executes a fresh testing unit each time.Since we are usingsame test objects.
+     */
+
     @AfterEach
     private void after() {
         testStudent = null;
@@ -49,10 +52,20 @@ public class IssueBook {
         testLibraryCard = null;
     }
 
-    // testing if the card has less than 4 or less books borrowed, this should
+    // testing if the card has less than 4 books borrowed, this should
     // return true
     @Test
-    public void numberBooks_True_IfLessThan4BooksBorrowed() throws IllegalBookIssueException {
+    public void numberBooks_True_ifLessThan4BooksBorrowed() throws IllegalBookIssueException {
+        Book testBook1 = new Book(1, "1", 0);
+        testLibraryCard.issueBook(testBook1);
+        boolean result = testLibraryCard.issueBook(testBook);
+        assertTrue(result);
+    }
+
+    // testing if the card has 4 or less books borrowed, this should
+    // return true
+    @Test
+    public void numberBooks_True_if4BooksBorrowed() throws IllegalBookIssueException {
         Book testBook1 = new Book(1, "1", 0);
         testLibraryCard.issueBook(testBook1);
         Book testBook2 = new Book(2, "2", 0);
@@ -68,7 +81,7 @@ public class IssueBook {
 
     // testing if the card has more than 4 books borrowed, this should return false
     @Test
-    public void numberBooks_False_IfLessThan4BooksBorrowed() throws IllegalBookIssueException {
+    public void returnFalse_ifMoreThan4BooksBorrowed() throws IllegalBookIssueException {
         Book testBook1 = new Book(1, "1", 0);
         testLibraryCard.issueBook(testBook1);
         Book testBook2 = new Book(2, "2", 0);
@@ -84,9 +97,9 @@ public class IssueBook {
     }
 
     // testing adding the same book into the card twice, this should throw
-    // IllegalBookIssueException
+    // IllegalBookIssueException if book is same twice.
     @Test
-    public void DuplicateIssue_ThrowsIllegalBookIssueException_IfSameBookTwice() throws IllegalBookIssueException {
+    public void DuplicateIssue_ThrowsIllegalBookIssueException_ifSameBookTwice() throws IllegalBookIssueException {
         Book testBook1 = new Book(1, "Duplicate Issue 1", 0);
         testLibraryCard.issueBook(testBook1); // we are issuing this book twice.
         assertThrows(IllegalBookIssueException.class, () -> {
@@ -94,9 +107,9 @@ public class IssueBook {
         });
     }
 
-    // testing issuing a book, card expiry date is after current date.
+    // testing issuing a book, card expiry date is after current date. Returns true
     @Test
-    public void isCardValid_True_ifIssueExpiredCard() throws IllegalBookIssueException {
+    public void returnTrue_ifIssueExpiredCard() throws IllegalBookIssueException {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2024, 10, 17);
         Date end = calendar.getTime();
@@ -105,9 +118,12 @@ public class IssueBook {
         assertTrue(result);
     }
 
-    // testing issuing a book, card expiry date is before current date (expired).
+    /*
+     * testing issuing a book, card expiry date is before current date (expired).
+     * Returns False
+     */
     @Test
-    public void isCardValid_False_ifIssueExpiredCard() throws IllegalBookIssueException {
+    public void returnFalse_ifIssueExpiredCard() throws IllegalBookIssueException {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, 10, 17);
         Date end = calendar.getTime();
@@ -118,7 +134,7 @@ public class IssueBook {
 
     // testing attempting to issue an avaiable book, this should return true
     @Test
-    public void statusBook_True_bookUnavailable() throws IllegalBookIssueException {
+    public void returnTrue_ifBookUnavailable() throws IllegalBookIssueException {
         testBook.setStatus(true);
         boolean result = testLibraryCard.issueBook(testBook);
         assertTrue(result);
@@ -126,7 +142,7 @@ public class IssueBook {
 
     // testing attempting to issue an unavailable book, this should return false
     @Test
-    public void statusBook_False_bookUnavailable() throws IllegalBookIssueException {
+    public void returnFalse_ifBookUnavailable() throws IllegalBookIssueException {
         Book unavailBook = new Book(1, "The Unavailable Book", 0);
         unavailBook.setStatus(false);
         boolean result = testLibraryCard.issueBook(unavailBook);
@@ -138,7 +154,7 @@ public class IssueBook {
      * student cannot borrowing a book, therefore turns false
      */
     @Test
-    public void noOutstandingFines_False_ifIssueWithFine() throws IllegalBookIssueException {
+    public void returnFalse_ifIssueWithFine() throws IllegalBookIssueException {
         double fine = 69.10;
         testLibraryCard.setFine(fine);
         //
@@ -149,7 +165,7 @@ public class IssueBook {
     // testing the day count after issuing a book not in demand, should have the
     // value 15
     @Test
-    public void issueDays_DaysIs15_issueLowDemand() throws IllegalBookIssueException {
+    public void daysIsEqual15_ifIssueLowDemand() throws IllegalBookIssueException {
         testBook.setDemand(0);
         testLibraryCard.issueBook(testBook);
         //
@@ -158,7 +174,7 @@ public class IssueBook {
 
     // testing the day count after issuing a book in demand, should have the value 3
     @Test
-    public void issueDays_DaysIs3_issuehighDemand() throws IllegalBookIssueException {
+    public void daysIs3_ifIssueHighDemand() throws IllegalBookIssueException {
         testBook.setDemand(1);
         testLibraryCard.issueBook(testBook);
         assertEquals(3, testBook.getDays());
