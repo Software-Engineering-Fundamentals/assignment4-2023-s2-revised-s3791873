@@ -62,7 +62,7 @@ public class IssueBook {
         assertTrue(result);
     }
 
-    // testing if the card has 4 or less books borrowed, this should
+    // testing if the card has exactly 4 books borrowed, this should
     // return true
     @Test
     public void numberBooks_True_if4BooksBorrowed() throws IllegalBookIssueException {
@@ -162,8 +162,8 @@ public class IssueBook {
         assertFalse(result);
     }
 
-    // testing the day count after issuing a book not in demand, should have the
-    // value 15
+    // testing the getDays count after issuing a book not in demand, should have the
+    // value 15 Successful borrowing.
     @Test
     public void daysIsEqual15_ifIssueLowDemand() throws IllegalBookIssueException {
         testBook.setDemand(0);
@@ -172,7 +172,8 @@ public class IssueBook {
         assertEquals(15, testBook.getDays());
     }
 
-    // testing the day count after issuing a book in demand, should have the value 3
+    // testing the getDays after issuing a book in demand, should have the value 3
+    // Successful borrowing.
     @Test
     public void daysIs3_ifIssueHighDemand() throws IllegalBookIssueException {
         testBook.setDemand(1);
