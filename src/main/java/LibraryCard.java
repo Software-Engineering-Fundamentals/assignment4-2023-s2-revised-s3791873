@@ -141,7 +141,8 @@ public class LibraryCard {
         }
 
         /*
-         * update status to show it is unavailable.
+         * update status to show it is unavailable. If there is only one copy of the
+         * book.
          */
         book.setStatus(true);
         borrowed.add(book); // add the book onto this card's borrowed list to keep track of number of books.
